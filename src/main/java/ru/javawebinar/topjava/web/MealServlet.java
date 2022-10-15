@@ -38,8 +38,8 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<MealTo> mealsWithExcess = MealsUtil.filteredByStreams(mealRepo.getMeals(),
-                LocalTime.of(0, 0, 0),
-                LocalTime.of(23, 59, 59),
+                LocalTime.MIN,
+                LocalTime.MAX,
                 userRepo.getCaloriesPerDay());
         request.setAttribute("meals", mealsWithExcess);
 

@@ -24,15 +24,7 @@
         <th>Calories</th>
     </tr>
     <c:forEach items="${meals}" var="meal">
-        <c:choose>
-        <c:when test="${meal.isExcess()}">
-            <c:set var = "colour" value = "red"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var = "colour" value = "green"/>
-        </c:otherwise>
-        </c:choose>
-        <tr style="color:${colour}">
+        <tr style="color:${meal.isExcess() ? 'red' : 'green'}"/>
             <td>${meal.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))}</td>
             <td>${meal.getDescription()}</td>
             <td>${meal.getCalories()}</td>
