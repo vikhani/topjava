@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="ru">
@@ -15,7 +16,7 @@
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>Meal</h2>
+<h2>Meals</h2>
 <table>
     <tr>
         <th>Date</th>
@@ -23,20 +24,19 @@
         <th>Calories</th>
     </tr>
     <c:forEach items="${meals}" var="meal">
-        <c:if test = "${meal.isExcess()}">
-            <tr>
-                <td><font color="green">${meal.getDateTimeView()}</font></td>
-                <td><font color="green">${meal.getDescription()}</font></td>
-                <td><font color="green">${meal.getCalories()}</font></td>
-            </tr>
-        </c:if>
-        <c:if test = "${!meal.isExcess()}">
-            <tr>
-                <td><font color="red">${meal.getDateTimeView()}</font></td>
-                <td><font color="red">${meal.getDescription()}</font></td>
-                <td><font color="red">${meal.getCalories()}</font></td>
-            </tr>
-        </c:if>
+        <c:choose>
+        <c:when test="${meal.isExcess()}">
+            <c:set var = "colour" value = "red"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var = "colour" value = "green"/>
+        </c:otherwise>
+        </c:choose>
+        <tr style="color:${colour}">
+            <td>${meal.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))}</td>
+            <td>${meal.getDescription()}</td>
+            <td>${meal.getCalories()}</td>
+        </tr>
     </c:forEach>
 </table>
 </body>

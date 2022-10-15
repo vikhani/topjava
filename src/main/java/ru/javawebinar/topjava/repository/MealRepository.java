@@ -1,24 +1,18 @@
 package ru.javawebinar.topjava.repository;
 
-import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.model.Meal;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class MealRepository {
-    private List<MealTo> meals = new ArrayList<>();
+    private List<Meal> meals = new ArrayList<>();
 
-    private static final int CALORIES_PER_DAY = 2000;
-
-    public void setMeals(List<MealTo> meals) {
+    public void setMeals(List<Meal> meals) {
         this.meals = meals;
     }
 
-    public List<MealTo> getMeals() {
+    public List<Meal> getMeals() {
         return new ArrayList<>(meals);
-    }
-
-    public int getCaloriesPerDay() {
-        return CALORIES_PER_DAY;
     }
 }

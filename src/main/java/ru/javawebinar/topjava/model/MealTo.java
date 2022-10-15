@@ -1,11 +1,7 @@
 package ru.javawebinar.topjava.model;
 
-import lombok.Getter;
-
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-@Getter
 public class MealTo {
     private final LocalDateTime dateTime;
 
@@ -22,9 +18,20 @@ public class MealTo {
         this.excess = excess;
     }
 
-    public String getDateTimeView() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return dateTime.format(formatter);
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public boolean isExcess() {
+        return excess;
     }
 
     @Override

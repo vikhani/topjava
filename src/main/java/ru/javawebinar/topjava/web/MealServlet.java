@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletConfig;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -21,6 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
     private final MealRepository mealRepo = new MealRepository();
+    private final UserRepository userRepo = new UserRepository();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -28,14 +31,19 @@ public class MealServlet extends HttpServlet {
 
         mealRepo.setMeals(MealsUtil.generateMeals());
         log.info("generated meals");
+        userRepo.setCaloriesPerDay(2000);
+        log.info("added calories restriction");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("redirect to meals");
-        List<MealTo> meals = mealRepo.getMeals();
+        List<MealTo> mealsWithExcess = MealsUtil.filteredByStreams(mealRepo.getMeals(),
+                LocalTime.of(0, 0, 0),
+                LocalTime.of(23, 59, 59),
+                userRepo.getCaloriesPerDay());
+        request.setAttribute("meals", mealsWithExcess);
 
-        request.setAttribute("meals", meals);
+        log.debug("redirect to meals");
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
     }
 }
