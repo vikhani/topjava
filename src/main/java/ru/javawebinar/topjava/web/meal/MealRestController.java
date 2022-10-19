@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalTime;
 import java.util.Collection;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -54,5 +56,11 @@ public class MealRestController {
         int userId = SecurityUtil.authUserId();
 
         service.update(meal, userId);
+    }
+
+    public Collection<MealTo> filter(LocalTime intervalStart, LocalTime intervalEnd){
+        log.info("get in time interval: {} - {}", intervalStart, intervalEnd);
+        int userId = SecurityUtil.authUserId();
+        return service.filter(userId, intervalStart, intervalEnd);
     }
 }
