@@ -13,7 +13,6 @@ import static ru.javawebinar.topjava.UserTestData.*;
 
 @Repository
 public class InMemoryUserRepository extends InMemoryBaseRepository<User> implements UserRepository {
-
     public void init() {
         map.clear();
         put(user);
