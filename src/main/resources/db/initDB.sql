@@ -35,6 +35,3 @@ CREATE TABLE meals
     CONSTRAINT meals_idx UNIQUE (user_id, datetime),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
-
-CREATE UNIQUE INDEX meals_datetime_idx ON meals (datetime);
-
