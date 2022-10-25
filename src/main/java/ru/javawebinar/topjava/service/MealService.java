@@ -10,6 +10,7 @@ import java.util.List;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMin;
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfNextDayOrMax;
+import static ru.javawebinar.topjava.util.ValidationUtil.assureCorrectUser;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -22,10 +23,12 @@ public class MealService {
     }
 
     public Meal get(int id, int userId) {
+        assureCorrectUser(userId, "Can't access meal with id=" + id);
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     public void delete(int id, int userId) {
+        assureCorrectUser(userId, "Can't access meal with id=" + id);
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
@@ -38,10 +41,12 @@ public class MealService {
     }
 
     public void update(Meal meal, int userId) {
+        assureCorrectUser(userId, "Can't access meal with id=" + meal.getId());
         checkNotFoundWithId(repository.save(meal, userId), meal.getId());
     }
 
     public Meal create(Meal meal, int userId) {
+        assureCorrectUser(userId, "Can't create for another user");
         return repository.save(meal, userId);
     }
 }

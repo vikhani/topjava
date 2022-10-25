@@ -24,7 +24,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = "classpath:db/populateTestDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest {
 
     static {
@@ -48,8 +48,8 @@ public class UserServiceTest {
 
     @Test
     public void duplicateMailCreate() {
-        assertThrows(DataAccessException.class, () ->
-                service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.USER)));
+        User user = new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.USER);
+        assertThrows(DataAccessException.class, () -> service.create(user));
     }
 
     @Test
