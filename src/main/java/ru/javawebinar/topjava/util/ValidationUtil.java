@@ -2,16 +2,8 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 public class ValidationUtil {
-
-    public static void assureCorrectUser(int userId, String msg){
-        if (SecurityUtil.authUserId() != userId){
-            checkNotFound(false, msg);
-        }
-    }
-
     public static <T> T checkNotFoundWithId(T object, int id) {
         checkNotFoundWithId(object != null, id);
         return object;
