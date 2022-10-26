@@ -3,24 +3,23 @@ package ru.javawebinar.topjava.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -73,7 +72,7 @@ public class MealServiceTest {
 
     @Test
     public void getBetweenInclusiveForMarginMeal() {
-        List<Meal> retMeals = service.getBetweenInclusive(marginEndDate.minusDays(1), marginEndDate, USER_ID+1);
+        List<Meal> retMeals = service.getBetweenInclusive(marginEndDate.minusDays(1), marginEndDate, ADMIN_ID);
 
         assertEquals(0, retMeals.size());
     }
@@ -88,15 +87,11 @@ public class MealServiceTest {
 
     @Test
     public void update() {
-        Meal updMeal = service.get(MEAL1_ID, USER_ID);
-        updMeal.setCalories(1000);
-        updMeal.setDateTime(LocalDateTime.of(2022, 10, 24, 18, 0, 0));
-        updMeal.setDescription("Ужин апдейт");
+        Meal updMeal = MealTestData.getUpdated();
         service.update(updMeal, USER_ID);
+        Meal retMeal = service.get(MEAL1_ID, USER_ID);
 
         Meal controlMeal = MealTestData.getUpdated();
-
-        Meal retMeal = service.get(MEAL1_ID, USER_ID);
         MealTestData.assertMatch(retMeal, controlMeal);
         MealTestData.assertMatch(updMeal, controlMeal);
     }
