@@ -21,6 +21,11 @@ public class Meal extends AbstractBaseEntity {
     public static final String ALL_SORTED = "Meal.getAllSorted";
     public static final String BETWEEN_HALFOPEN = "Meal.getBetweenHalfOpen";
 
+    public static final String ID_PARAM = "id";
+    public static final String USER_ID_PARAM = "user_id";
+    public static final String START_TIME_PARAM = "start_time";
+    public static final String END_TIME_PARAM = "end_time";
+
     @Column(name = "date_time", nullable = false)
     @NotNull
     @CollectionTable(name = "user_date_time", joinColumns = @JoinColumn(name = "user_id"),
