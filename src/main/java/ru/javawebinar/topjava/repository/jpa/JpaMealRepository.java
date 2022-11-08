@@ -19,37 +19,31 @@ public class JpaMealRepository implements MealRepository {
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        User ref = em.getReference(User.class, userId);
-        if(meal.isNew()){
+        if (meal.isNew()) {
+            User ref = em.getReference(User.class, userId);
             meal.setUser(ref);
             em.persist(meal);
             return meal;
         } else {
-            meal.setUser(ref);
-            Meal updatedMealRef = em.getReference(Meal.class, meal.getId());
-            return updatedMealRef.getUser().getId() == userId ? em.merge(meal) : null;
+            return meal.getUser().getId() == userId ? em.merge(meal) : null;
         }
     }
 
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        Meal m = em.find(Meal.class, id);
-        if (m == null || m.getUser().getId() != userId) {
-            return false;
-        }
-
-        em.remove(m);
-        return true;
+        return em.createNamedQuery(Meal.DELETE)
+                .setParameter(Meal.ID_PARAM, id)
+                .setParameter(Meal.USER_ID_PARAM, userId)
+                .executeUpdate() != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        List<Meal> meals = em.createNamedQuery(Meal.GET)
+        List<Meal> meals = em.createNamedQuery(Meal.GET, Meal.class)
                 .setParameter(Meal.ID_PARAM, id)
                 .setParameter(Meal.USER_ID_PARAM, userId)
                 .getResultList();
@@ -59,14 +53,14 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return em.createNamedQuery(Meal.ALL_SORTED)
+        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
                 .setParameter(Meal.USER_ID_PARAM, userId)
                 .getResultList();
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return em.createNamedQuery(Meal.BETWEEN_HALFOPEN)
+        return em.createNamedQuery(Meal.BETWEEN_HALFOPEN, Meal.class)
                 .setParameter(Meal.USER_ID_PARAM, userId)
                 .setParameter(Meal.START_TIME_PARAM, startDateTime)
                 .setParameter(Meal.END_TIME_PARAM, endDateTime)

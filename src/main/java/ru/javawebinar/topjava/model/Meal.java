@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -9,12 +12,17 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
-@NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.id IN (SELECT mm.id FROM User u JOIN Meal mm on mm.user = u WHERE u.id=:user_id)")
-@NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.id=:id AND m.user.id=:user_id")
-@NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.user.id=:user_id ORDER BY m.dateTime DESC")
-@NamedQuery(name = Meal.BETWEEN_HALFOPEN, query = "SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.user.id=:user_id  AND m.dateTime>=:start_time  AND m.dateTime<:end_time ORDER BY m.dateTime DESC")
+@NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:user_id")
+@NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:user_id")
+@NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:user_id ORDER BY m.dateTime DESC")
+@NamedQuery(name = Meal.BETWEEN_HALFOPEN, query = "SELECT m FROM Meal m " +
+        "WHERE m.user.id=:user_id AND m.dateTime>=:start_time AND m.dateTime<:end_time " +
+        "ORDER BY m.dateTime DESC")
 @Entity
-@Table(name = "meals")
+@Table(
+        name = "meals",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "uk_user_datetime")}
+)
 public class Meal extends AbstractBaseEntity {
     public static final String DELETE = "Meal.delete";
     public static final String GET = "Meal.get";
@@ -28,19 +36,20 @@ public class Meal extends AbstractBaseEntity {
 
     @Column(name = "date_time", nullable = false)
     @NotNull
-    @CollectionTable(name = "user_date_time", joinColumns = @JoinColumn(name = "user_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "uk_user_datetime")})
     private LocalDateTime dateTime;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 120)
+    @Length(min = 2, max = 120)
     @NotBlank
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @NotNull
+    @Range(min = 10, max = 5000)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     public Meal() {
