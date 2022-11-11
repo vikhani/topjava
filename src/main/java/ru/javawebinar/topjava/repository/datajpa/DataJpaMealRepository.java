@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.service.UserService;
@@ -12,9 +12,6 @@ import java.util.Optional;
 
 @Repository
 public class DataJpaMealRepository implements MealRepository {
-
-    private static final Sort SORT_DATETIME = Sort.by(Sort.Direction.DESC, "dateTime");
-
     private final CrudMealRepository crudRepository;
 
     private final UserService userService;
@@ -24,6 +21,7 @@ public class DataJpaMealRepository implements MealRepository {
         this.userService = userService;
     }
 
+    @Transactional
     @Override
     public Meal save(Meal meal, int userId) {
         if (!meal.isNew() && get(meal.getId(), userId) == null) {
@@ -56,7 +54,7 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return crudRepository.findAllByUserId(userId, SORT_DATETIME);
+        return crudRepository.findAllByUserId(userId);
     }
 
     @Override

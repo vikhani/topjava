@@ -11,14 +11,13 @@ import ru.javawebinar.topjava.model.Meal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Transactional()
+@Transactional(readOnly = true)
 public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
-    List<Meal> findAllByUserId(int userId, Sort sort);
+    @Query(name = Meal.ALL_SORTED)
+    List<Meal> findAllByUserId(@Param("userId") int userId);
 
-    @Transactional
-    @Modifying
     @Query(name = Meal.GET_BETWEEN)
     List<Meal> getBetweenInclusive(@Param("startDateTime") LocalDateTime startDateTime,
-                            @Param("endDateTime") LocalDateTime endDateTime,
-                            @Param("userId") int userId);
+                                   @Param("endDateTime") LocalDateTime endDateTime,
+                                   @Param("userId") int userId);
 }
