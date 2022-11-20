@@ -19,6 +19,11 @@ public abstract class MealServiceTest extends ServiceTest {
     @Autowired
     private MealService service;
 
+    @BeforeClass
+    public static void prepareResults() {
+        results = new StringBuilder();
+    }
+
     @Before
     public void setup() {
         cacheManager.getCache("users").clear();

@@ -21,13 +21,13 @@ public class UserService {
         this.repository = repository;
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = {"users", "meals"}, allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(user);
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = {"users", "meals"}, allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);
     }
@@ -46,7 +46,7 @@ public class UserService {
         return repository.getAll();
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = {"users", "meals"}, allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.id());
