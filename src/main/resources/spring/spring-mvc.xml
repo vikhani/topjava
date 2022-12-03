@@ -20,6 +20,16 @@
                     </list>
                 </property>
             </bean>
+<!--            <bean id="conversionService"-->
+<!--                  class="org.springframework.format.support.FormattingConversionServiceFactoryBean">-->
+<!--            <property name="formatters">-->
+<!--                <set>-->
+<!--                    <bean class="ru.javawebinar.topjava.util.formatter.LocalDateFormatter"/>-->
+<!--                    <bean class="ru.javawebinar.topjava.util.formatter.LocalTimeFormatter"/>-->
+<!--                    <bean class="ru.javawebinar.topjava.util.formatter.CustomDateTimeAnnotationFormatterFactory"/>-->
+<!--                </set>-->
+<!--            </property>-->
+<!--            </bean>-->
         </mvc:message-converters>
     </mvc:annotation-driven>
 
