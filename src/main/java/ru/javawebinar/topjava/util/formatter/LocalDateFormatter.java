@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class LocalDateFormatter implements Formatter<LocalDate> {
 
-    private DateTimeFormatter pattern = DateTimeFormatter.ISO_DATE;
+    private DateTimeFormatter pattern = DateTimeFormatter.ISO_LOCAL_DATE;
 
     @Override
     public LocalDate parse(String text, Locale locale) throws ParseException {

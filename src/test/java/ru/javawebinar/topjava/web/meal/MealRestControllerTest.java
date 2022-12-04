@@ -39,24 +39,10 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get(MealRestController.REST_URL
-                + "/filter/"
-                + START_DATE_TIME.format(ISO_DATE_TIME_FORMATTER)
-                + "/"
-                + END_DATE_TIME.format(ISO_DATE_TIME_FORMATTER)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(mealsToFiltered));
-    }
-
-    @Test
     void getBetweenTime() throws Exception {
-        perform(MockMvcRequestBuilders.get(MealRestController.REST_URL
-                + "/filter/v2/"
-                + START_DATE_TIME.toLocalTime().format(ISO_TIME_FORMATTER)
-                + "/"
-                + END_DATE_TIME.toLocalTime().format(ISO_TIME_FORMATTER)))
+        perform(MockMvcRequestBuilders.get(MealRestController.REST_URL + "/filter")
+                .param("start_time", "10:00")
+                .param("end_time", "00:00"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MEAL_TO_MATCHER.contentJson(mealsToFiltered));
@@ -65,22 +51,10 @@ class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void getBetweenDate() throws Exception {
         perform(MockMvcRequestBuilders.get(MealRestController.REST_URL
-                + "/filter/v2/"
-                + START_DATE_TIME.toLocalDate().format(ISO_DATE_FORMATTER)
-                + "/"
-                + END_DATE_TIME.toLocalDate().format(ISO_DATE_FORMATTER)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(mealsToFiltered));
-    }
-
-    @Test
-    void getBetweenDateV3() throws Exception {
-        perform(MockMvcRequestBuilders.get(MealRestController.REST_URL
-                + "/filter/v3?start_date="
-                + START_DATE_TIME.toLocalDate().format(ISO_DATE_FORMATTER)
+                + "/filter?start_date="
+                + "2022-12-30"
                 + "&end_date="
-                + END_DATE_TIME.toLocalDate().format(ISO_DATE_FORMATTER)))
+                + "2022-12-30"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MEAL_TO_MATCHER.contentJson(mealsToFiltered));

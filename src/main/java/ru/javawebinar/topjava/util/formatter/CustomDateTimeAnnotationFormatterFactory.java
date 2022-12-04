@@ -28,9 +28,9 @@ public class CustomDateTimeAnnotationFormatterFactory implements AnnotationForma
     }
 
     private Formatter<?> configureFormatterFrom(CustomDateTimeFormat annotation, Class<?> fieldType) {
-        if (fieldType.isInstance(LocalDate.class)) {
+        if (fieldType.equals(LocalDate.class)) {
             return new LocalDateFormatter();
-        } else if (fieldType.isInstance(LocalTime.class)) {
+        } else if (fieldType.equals(LocalTime.class)) {
             return new LocalTimeFormatter();
         }
 
