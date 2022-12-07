@@ -23,8 +23,8 @@ $(function () {
                 },
                 {
                     "render": deleteButton,
-                    "defaultContent": "",
-                    "orderable": false
+                     "defaultContent": "",
+                     "orderable": false
                 }
             ],
             "order": [
@@ -35,8 +35,4 @@ $(function () {
             ]
         })
     );
-
-    $('#dateTime').datetimepicker({
-        format: 'Y-m-d H:i'
-    });
 });

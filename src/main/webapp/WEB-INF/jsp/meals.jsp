@@ -25,6 +25,17 @@
                 <th></th>
             </tr>
             </thead>
+            <c:forEach items="${requestScope.meals}" var="meal">
+                <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
+                <tr data-meal-excess="${meal.excess}">
+                    <td>
+                            ${fn:formatDateTime(meal.dateTime)}
+                    </td>
+                    <td>${meal.description}</td>
+                    <td>${meal.calories}</td>
+                    <td><a href="meals/delete?id=${meal.id}"><spring:message code="common.delete"/></a></td>
+                </tr>
+            </c:forEach>
         </table>
     </div>
 </div>
