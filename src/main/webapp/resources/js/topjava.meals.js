@@ -2,7 +2,17 @@ const mealAjaxUrl = "ui/meals/";
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
-    ajaxUrl: mealAjaxUrl
+    ajaxUrl: mealAjaxUrl,
+    filter: function () {
+        $.ajax({
+            type: "GET",
+            url: mealAjaxUrl + "filter",
+            dataType: 'json',
+            data: $('#filter').serialize(),
+            //success: function (d){ ctx.datatableApi.clear().rows.add(d).draw(); }
+            success: function (d){console.log(d);}
+        });
+    }
 };
 
 // $(document).ready(function () {

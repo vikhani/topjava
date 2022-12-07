@@ -12,6 +12,17 @@
 
 <div class="jumbotron pt-4">
     <div class="container">
+        <form id="filter">
+            <label for="startDate"><spring:message code="meal.startDate"/></label>
+            <input class="form-control" name="startDate" id="startDate">
+            <label for="endDate"><spring:message code="meal.endDate"/></label>
+            <input class="form-control" name="endDate" id="endDate">
+            <br>
+            <button class="btn btn-primary" onclick="ctx.filter()">
+                <spring:message code="meal.filter"/>
+            </button>
+        </form>
+        <br>
         <button class="btn btn-primary" onclick="add()">
             <span class="fa fa-plus-circle"></span>
             <spring:message code="common.add"/>
