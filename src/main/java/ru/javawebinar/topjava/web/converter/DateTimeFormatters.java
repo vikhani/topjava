@@ -34,10 +34,15 @@ public class DateTimeFormatters {
             return lt.format(DateTimeFormatter.ISO_LOCAL_TIME);
         }
     }
+
     public static class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
 
         @Override
         public LocalDateTime parse(String text, Locale locale) {
+            if(text.indexOf('T') == -1) {
+                text = text.replace(' ', 'T');
+            }
+
             return LocalDateTime.parse(text);
         }
 

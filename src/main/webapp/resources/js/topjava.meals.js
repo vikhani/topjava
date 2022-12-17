@@ -29,8 +29,8 @@ $(function () {
             "columns": [
                 {
                     "data": "dateTime",
-                    "render": function(data, type, row){
-                        if (type === 'display') {
+                    "render": function (data, type, row) {
+                        if (type === 'display' && row.hasOwnProperty('dateTime')) {
                             return row.dateTime.replace('T', ' ');
                         }
                         return data;
@@ -64,4 +64,28 @@ $(function () {
             }
         })
     );
+});
+
+$('#startDate').datetimepicker({
+    timepicker: false,
+    format: 'Y-m-d'
+});
+
+$('#endDate').datetimepicker({
+    timepicker: false,
+    format: 'Y-m-d'
+});
+
+$('#startTime').datetimepicker({
+    datepicker: false,
+    format: 'H:i'
+});
+
+$('#endTime').datetimepicker({
+    datepicker: false,
+    format: 'H:i'
+});
+
+$('#dateTime').datetimepicker({
+    format: 'Y-m-d H:i'
 });
