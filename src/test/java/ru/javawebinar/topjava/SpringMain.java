@@ -4,7 +4,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
-import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.to.MealWithExcess;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
@@ -29,7 +29,7 @@ public class SpringMain {
             mockAuthorize(user);
 
             MealRestController mealController = appCtx.getBean(MealRestController.class);
-            List<MealTo> filteredMealsWithExcess =
+            List<MealWithExcess> filteredMealsWithExcess =
                     mealController.getBetween(
                             LocalDate.of(2020, Month.JANUARY, 30), LocalTime.of(7, 0),
                             LocalDate.of(2020, Month.JANUARY, 31), LocalTime.of(11, 0));

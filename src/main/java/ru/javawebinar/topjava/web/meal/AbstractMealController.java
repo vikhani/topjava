@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.to.MealWithExcess;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -36,7 +37,7 @@ public abstract class AbstractMealController {
         service.delete(id, userId);
     }
 
-    public List<MealTo> getAll() {
+    public List<MealWithExcess> getAll() {
         int userId = SecurityUtil.authUserId();
         log.info("getAll for user {}", userId);
         return MealsUtil.getTos(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
@@ -65,8 +66,7 @@ public abstract class AbstractMealController {
         int userId = SecurityUtil.authUserId();
         log.info("update {} for user {}", mealTo, userId);
         assureIdConsistent(mealTo, id);
-        Meal meal = get(mealTo.id());
-        service.update(MealsUtil.updateFromTo(meal, mealTo), userId);
+        service.update(MealsUtil.createMealFromTo(mealTo), userId);
     }
 
     /**
@@ -75,8 +75,8 @@ public abstract class AbstractMealController {
      * <li>by time for every date</li>
      * </ol>
      */
-    public List<MealTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
-                                   @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+    public List<MealWithExcess> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
+                                           @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
         log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
 

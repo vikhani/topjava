@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.to.MealWithExcess;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public class MealUIController extends AbstractMealController {
 
     @Override
     @GetMapping
-    public List<MealTo> getAll() {
+    public List<MealWithExcess> getAll() {
         return super.getAll();
     }
 
@@ -59,7 +60,7 @@ public class MealUIController extends AbstractMealController {
 
     @Override
     @GetMapping("/filter")
-    public List<MealTo> getBetween(
+    public List<MealWithExcess> getBetween(
             @RequestParam @Nullable LocalDate startDate,
             @RequestParam @Nullable LocalTime startTime,
             @RequestParam @Nullable LocalDate endDate,

@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.to.MealWithExcess;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ public class MealRestController extends AbstractMealController {
 
     @Override
     @GetMapping
-    public List<MealTo> getAll() {
+    public List<MealWithExcess> getAll() {
         return super.getAll();
     }
 
@@ -56,8 +56,9 @@ public class MealRestController extends AbstractMealController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
+    @Override
     @GetMapping("/filter")
-    public List<MealTo> getBetween(
+    public List<MealWithExcess> getBetween(
             @RequestParam @Nullable LocalDate startDate,
             @RequestParam @Nullable LocalTime startTime,
             @RequestParam @Nullable LocalDate endDate,
