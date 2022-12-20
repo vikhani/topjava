@@ -10,7 +10,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
-import javax.validation.Valid;
+import javax.validation.*;
 
 @Controller
 @RequestMapping("/profile")
