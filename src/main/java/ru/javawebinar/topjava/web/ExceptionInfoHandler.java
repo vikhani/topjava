@@ -40,9 +40,18 @@ public class ExceptionInfoHandler {
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
-    @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class, BindException.class})
-    public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e, BindingResult bindingResult) {
-        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, bindingResult);
+    @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
+    public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
+        Throwable rootCause = ValidationUtil.getRootCause(e);
+        log.warn("{} at request  {}: {}", VALIDATION_ERROR, req.getRequestURL(), rootCause.toString());
+
+        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
+    @ExceptionHandler(BindException.class)
+    public ErrorInfo bindingDataError(HttpServletRequest req, Exception e, BindingResult bindingResult) {
+        return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR.getMessage(), ValidationUtil.getErrorDetails(bindingResult));
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -58,21 +67,6 @@ public class ExceptionInfoHandler {
             log.error(errorType + " at request " + req.getRequestURL(), rootCause);
         } else {
             log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
-        }
-
-        return new ErrorInfo(req.getRequestURL(), errorType.getMessage(), rootCause.getMessage());
-    }
-
-    private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType, BindingResult bindingResult) {
-        Throwable rootCause = ValidationUtil.getRootCause(e);
-        if (logException) {
-            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
-        } else {
-            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
-        }
-
-        if(bindingResult.hasErrors()){
-            return new ErrorInfo(req.getRequestURL(), errorType.getMessage(), ValidationUtil.getErrorResponse(bindingResult));
         }
 
         return new ErrorInfo(req.getRequestURL(), errorType.getMessage(), rootCause.getMessage());

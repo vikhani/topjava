@@ -76,7 +76,7 @@ public class ValidationUtil {
         return rootCause != null ? rootCause : t;
     }
 
-    public static String getErrorResponse(BindingResult result) {
+    public static String getErrorDetails(BindingResult result) {
         return result.getFieldErrors().stream()
                 .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
                 .collect(Collectors.joining("<br>"));

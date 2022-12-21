@@ -45,6 +45,7 @@ public class AdminRestController extends AbstractUserController {
         super.delete(id);
     }
 
+    @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody User user, @PathVariable int id) {
@@ -57,6 +58,7 @@ public class AdminRestController extends AbstractUserController {
         return super.getByMail(email);
     }
 
+    @Override
     @GetMapping("/{id}/with-meals")
     public User getWithMeals(@PathVariable int id) {
         return super.getWithMeals(id);
