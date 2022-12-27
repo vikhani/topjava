@@ -42,9 +42,6 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
-        Throwable rootCause = ValidationUtil.getRootCause(e);
-        log.warn("{} at request  {}: {}", VALIDATION_ERROR, req.getRequestURL(), rootCause.toString());
-
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 

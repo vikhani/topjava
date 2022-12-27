@@ -4,7 +4,8 @@ public enum ErrorType {
     APP_ERROR("app error"),
     DATA_NOT_FOUND("data not found"),
     DATA_ERROR("data error"),
-    VALIDATION_ERROR("Ошибка проверки данных");
+    VALIDATION_ERROR("Ошибка проверки данных"),
+    INVALID_DUPLICATE("Такое значение уже есть");
 
     private final String message;
 
